@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: 16
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
       - run: yarn --prefer-offline --frozen-lockfile
       - run: yarn build
       - name: "Retrieving package version"
@@ -27,8 +27,8 @@ jobs:
         uses: pr-mpt/actions-commit-hash@v2
       - name: "Set git user"
         run: |
-          git config user.name ChainSafe
-          git config user.email info@chainsafe.io
+          git config user.name tomastylecek
+          git config user.email tomas@tomastylecek.com
       - run: yarn publish --access public --tag beta --new-version ${{steps.version.outputs.current-version}}-${{steps.commit.outputs.short}}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
