@@ -1,3 +1,6 @@
+import Stealth from "puppeteer-extra-plugin-stealth";
+import pupetteer from "puppeteer-extra";
+
 import { DappeteerBrowser } from "../browser";
 import { DappeteerLaunchOptions } from "../types";
 
@@ -6,9 +9,8 @@ export async function launchPuppeteer(
   userDataDir: string,
   options: DappeteerLaunchOptions
 ): Promise<DappeteerBrowser> {
-  const pBrowser = await (
-    await import("puppeteer")
-  ).default.launch({
+  pupetteer.use(Stealth());
+  const pBrowser = await pupetteer.launch({
     ...(options.puppeteerOptions ?? {}),
     headless: options.headless,
     userDataDir,
