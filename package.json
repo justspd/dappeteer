@@ -78,6 +78,7 @@
     "prettier": "^2.2.1",
     "puppeteer": "19.6.3",
     "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-block-resources": "^2.4.3",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "solc": "0.5.2",
     "ts-node": "^10.9.1",
