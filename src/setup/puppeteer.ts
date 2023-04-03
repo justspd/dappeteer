@@ -11,7 +11,7 @@ export async function launchPuppeteer(
   options: DappeteerLaunchOptions
 ): Promise<DappeteerBrowser> {
   pupetteer.use(Stealth());
-  pupetteer.use(Block());
+  pupetteer.use(Block({ blockedTypes: new Set(["image"]) }));
   const pBrowser = await pupetteer.launch({
     ...(options.puppeteerOptions ?? {}),
     headless: options.headless,
