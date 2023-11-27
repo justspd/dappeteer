@@ -6,8 +6,6 @@ import { Dappeteer, MetaMaskOptions } from "../types";
 import { retry, waitForOverlay } from "../helpers";
 import {
   acceptTheRisks,
-  closeNewModal,
-  closePortfolioTooltip,
   closeWhatsNewModal,
   enableEthSign,
   importAccount,
@@ -24,21 +22,17 @@ type Step<Options> = (
 
 const defaultMetaMaskSteps: Step<MetaMaskOptions>[] = [
   importAccount,
-  closeNewModal,
+  closeWhatsNewModal,
   showTestNets,
   enableEthSign,
-  closeWhatsNewModal,
-  closeWhatsNewModal,
 ];
 
 const flaskMetaMaskSteps: Step<MetaMaskOptions>[] = [
   acceptTheRisks,
   importAccount,
+  closeWhatsNewModal,
   showTestNets,
   enableEthSign,
-  closePortfolioTooltip,
-  closeWhatsNewModal,
-  closeWhatsNewModal,
 ];
 
 const MM_HOME_REGEX = "chrome-extension://[a-z]+/home.html";

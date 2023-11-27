@@ -8,6 +8,7 @@ import {
   openSettingsScreen,
   typeOnInputField,
   waitForOverlay,
+  evaluateElementClick,
 } from "../helpers";
 import { DappeteerPage } from "../page";
 import { MetaMaskOptions } from "../types";
@@ -15,8 +16,11 @@ import { MetaMaskOptions } from "../types";
 export async function showTestNets(metaMaskPage: DappeteerPage): Promise<void> {
   await openNetworkDropdown(metaMaskPage);
 
-  await clickOnElement(metaMaskPage, "Show/hide");
-  await clickOnSettingsSwitch(metaMaskPage, "Show test networks");
+  const toggleSwitch = await metaMaskPage.waitForSelector(".toggle-button", {
+    visible: true,
+  });
+  await toggleSwitch.click();
+
   await clickOnLogo(metaMaskPage);
 }
 
@@ -24,7 +28,16 @@ export async function enableEthSign(
   metaMaskPage: DappeteerPage
 ): Promise<void> {
   await openSettingsScreen(metaMaskPage, "Advanced");
-  await clickOnSettingsSwitch(metaMaskPage, "Toggle eth_sign requests");
+  await clickOnSettingsSwitch(metaMaskPage, "Eth_sign requests");
+  await clickOnElement(metaMaskPage, "eth-sign__checkbox");
+  await clickOnButton(metaMaskPage, "Continue");
+  await typeOnInputField(
+    metaMaskPage,
+    "Enter “I only sign what I understand” to continue",
+    "I only sign what I understand"
+  );
+  await clickOnButton(metaMaskPage, "Enable");
+  await metaMaskPage.waitForTimeout(333);
   await clickOnLogo(metaMaskPage);
 }
 
@@ -53,6 +66,8 @@ export async function importAccount(
     password = "password1234",
   }: MetaMaskOptions
 ): Promise<void> {
+  await waitForOverlay(metaMaskPage);
+  await clickOnElement(metaMaskPage, "onboarding-terms-checkbox");
   await clickOnButton(metaMaskPage, "onboarding-import-wallet");
   await clickOnButton(metaMaskPage, "metametrics-i-agree");
 
@@ -79,36 +94,21 @@ export async function importAccount(
 }
 
 export const closePopup = async (page: DappeteerPage): Promise<void> => {
-  /* For some reason popup deletes close button and then create new one (react stuff)
-   * hacky solution can be found here => https://github.com/puppeteer/puppeteer/issues/3496 */
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  await page.$eval(".popover-header__button", (node) => node.click());
-};
-
-export const closePortfolioTooltip = async (
-  page: DappeteerPage
-): Promise<void> => {
-  const closeButton = await page.waitForSelector(
-    `div.home__subheader-link--tooltip-content-header > button`,
-    {
-      timeout: 20000,
-    }
-  );
-  await closeButton.click();
-  await page.waitForTimeout(333);
+  await evaluateElementClick(page, ".popover-header__button");
 };
 
 export const closeWhatsNewModal = async (
   page: DappeteerPage
 ): Promise<void> => {
-  await page.reload();
-  await clickOnLogo(page);
-  await page.waitForTimeout(333);
+  await evaluateElementClick(page, '[data-testid="popover-close"]');
 };
 
-export const closeNewModal = async (page: DappeteerPage): Promise<void> => {
-  const closeButton = await page.$(
-    ".home__subheader-link--tooltip-content-header-button"
+export const closePrivacyWarningModal = async (
+  page: DappeteerPage
+): Promise<void> => {
+  await evaluateElementClick(
+    page,
+    '[data-testid="snap-privacy-warning-scroll"]'
   );
-  await closeButton.click();
+  await clickOnButton(page, "Accept");
 };

@@ -1,9 +1,9 @@
 import { DappeteerElementHandle } from "../element";
 import { DappeteerPage } from "../page";
 import {
-  getAccountMenuButton,
   getButton,
   getElementByContent,
+  getElementByTestId,
   getInputByLabel,
   getSettingsSwitch,
 } from "./selectors";
@@ -31,8 +31,9 @@ export const openSettingsScreen = async (
   page: DappeteerPage,
   section: Section = "General"
 ): Promise<void> => {
-  await profileDropdownClick(page);
-  await clickOnElement(page, "Settings");
+  await clickOnElement(page, "account-options-menu-button");
+  await clickOnElement(page, "global-menu-settings");
+
   await clickOnElement(page, section);
 };
 
@@ -40,42 +41,42 @@ export const openNetworkDropdown = async (
   page: DappeteerPage
 ): Promise<void> => {
   await retry(async () => {
-    const networkSwitcher = await page.waitForSelector(".network-display", {
+    const networkSwitcher = await page.waitForSelector(".mm-picker-network", {
       visible: true,
     });
     await networkSwitcher.click();
-    await page.waitForSelector(".network-dropdown-list", {
-      visible: true,
-      timeout: 1000,
-    });
   }, 3);
 };
 
 export const profileDropdownClick = async (
-  page: DappeteerPage,
-  expectToClose = false
+  page: DappeteerPage
 ): Promise<void> => {
   await retry(async () => {
-    const accountSwitcher = await page.waitForSelector(".account-menu__icon", {
+    await clickOnButton(page, "account-menu-icon", {
       visible: true,
-      timeout: 2000,
-    });
-    await accountSwitcher.click();
-    await page.waitForSelector(".account-menu", {
-      hidden: expectToClose,
       timeout: 2000,
     });
   }, 3);
 };
 
-export const openAccountDropdown = async (
-  page: DappeteerPage
+export const accountOptionsDropdownClick = async (
+  page: DappeteerPage,
+  expectToClose = false
 ): Promise<void> => {
-  const accMenu = await getAccountMenuButton(page);
-  await accMenu.click();
-  await page.waitForSelector(".menu__container.account-options-menu", {
-    visible: true,
-  });
+  await retry(async () => {
+    const accountOptionsButton = await page.waitForSelector(
+      `[data-testid="account-options-menu-button"]`,
+      {
+        visible: true,
+        timeout: 2000,
+      }
+    );
+    await accountOptionsButton.click();
+    await page.waitForSelector(".menu__container", {
+      hidden: expectToClose,
+      timeout: 2000,
+    });
+  }, 3);
 };
 
 export const clickOnElement = async (
@@ -83,7 +84,10 @@ export const clickOnElement = async (
   text: string,
   type?: string
 ): Promise<void> => {
-  const element = await getElementByContent(page, text, type);
+  const element = await Promise.race([
+    getElementByContent(page, text, type),
+    getElementByTestId(page, text),
+  ]);
   await element.click();
 };
 
@@ -167,7 +171,7 @@ export const clickOnLittleDownArrowIfNeeded = async (
   page: DappeteerPage
 ): Promise<void> => {
   // wait for the signature page and content to be loaded
-  await page.waitForSelector('[data-testid="signature-cancel-button"]', {
+  await page.waitForSelector('[data-testid="page-container-footer-next"]', {
     visible: true,
   });
 
@@ -175,7 +179,7 @@ export const clickOnLittleDownArrowIfNeeded = async (
   // and scroll until the bottom of the message
   // before enabling the "Sign" button
   const isSignButtonDisabled = await page.$eval(
-    '[data-testid="signature-sign-button"]',
+    '[data-testid="page-container-footer-next"]',
     (button: HTMLButtonElement) => {
       return button.disabled;
     }
@@ -191,4 +195,14 @@ export const clickOnLittleDownArrowIfNeeded = async (
 
     await littleArrowDown.click();
   }
+};
+
+export const evaluateElementClick = async (
+  page: DappeteerPage,
+  selector: string
+): Promise<void> => {
+  /* For some reason popup deletes close button and then create new one (react stuff)
+   * hacky solution can be found here => https://github.com/puppeteer/puppeteer/issues/3496 */
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await page.$eval(selector, (node) => node.click());
 };

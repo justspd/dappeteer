@@ -9,7 +9,7 @@ import { launchPuppeteer } from "./puppeteer";
 import { isNewerVersion } from "./utils/isNewerVersion";
 import downloader from "./utils/metaMaskDownloader";
 import { getTemporaryUserDataDir } from "./utils/getTemporaryUserDataDir";
-import { addKeyToMetaMaskManifest } from "./utils/addKeyToMetaMaskManifest";
+import { patchMetaMask } from "./utils/patch";
 
 /**
  * Launch Puppeteer chromium instance with MetaMask plugin installed
@@ -64,13 +64,24 @@ export async function launch(
     metamaskPath = options.metaMaskPath;
   }
 
-  addKeyToMetaMaskManifest(metamaskPath, options.key);
+  patchMetaMask(metamaskPath, { key: options.key });
   const userDataDir = getTemporaryUserDataDir();
   if (options.userDataDir)
     copyUserDataFiles(path.resolve(options.userDataDir), userDataDir);
 
   if (options.automation) {
     switch (options.automation) {
+      case "custom":
+        console.warn("Custom automation in use. Proceed at own risk.");
+        if (!options.customAutomation) {
+          fs.rmSync(userDataDir, { recursive: true, force: true });
+          throw new Error("Missing customBootstrap method in options");
+        }
+        return await options.customAutomation(
+          metamaskPath,
+          userDataDir,
+          options
+        );
       case "playwright":
         return await launchPlaywright(metamaskPath, userDataDir, options);
       case "puppeteer":

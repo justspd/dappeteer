@@ -51,7 +51,7 @@ describe("userData", function () {
       await setupMetaMask(browser, metaMaskOptions);
 
       // give some pause to store state into files
-      await pause(1);
+      await pause(5);
 
       const isSuccess = browser.storeUserData(userDataDir);
       await browser.close();
@@ -72,7 +72,7 @@ describe("userData", function () {
 
       const shortAddress = await metaMask.page.evaluate(() =>
         document
-          .querySelector(".selected-account__address")
+          .querySelector(`[data-testid="address-copy-button-text"]`)
           .innerHTML.substring(0, 12)
       );
       await browser.close();
@@ -99,7 +99,7 @@ describe("userData", function () {
       await setupMetaMask(browser, metaMaskOptions);
 
       // give some pause to store state into files
-      await pause(1);
+      await pause(5);
 
       const isSuccess = browser.storeUserData(userDataDir);
       await browser.close();
@@ -121,7 +121,7 @@ describe("userData", function () {
 
       const shortAddress = await metaMask.page.evaluate(() =>
         document
-          .querySelector(".selected-account__address")
+          .querySelector(`[data-testid="address-copy-button-text"]`)
           .innerHTML.substring(0, 12)
       );
       await browser.close();
@@ -145,7 +145,7 @@ describe("userData", function () {
 
       const shortAddress = await metaMask.page.evaluate(() =>
         document
-          .querySelector(".selected-account__address")
+          .querySelector(`[data-testid="address-copy-button-text"]`)
           .innerHTML.substring(0, 12)
       );
       await browser.close();
@@ -167,7 +167,7 @@ describe("userData", function () {
 
       const shortAddress = await metaMask.page.evaluate(() =>
         document
-          .querySelector(".selected-account__address")
+          .querySelector(`[data-testid="address-copy-button-text"]`)
           .innerHTML.substring(0, 12)
       );
       await browser.close();

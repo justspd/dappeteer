@@ -1,5 +1,39 @@
 # Changelog
 
+## [5.2.0](https://github.com/ChainSafe/dappeteer/compare/v5.1.1...v5.2.0) (2023-05-31)
+
+
+### Features
+
+* custom automation ([#332](https://github.com/ChainSafe/dappeteer/issues/332)) ([e25032f](https://github.com/ChainSafe/dappeteer/commit/e25032f5d129ad7c15aff36e6aabcef39b823d0f))
+* support MetaMask v10.31.0 ([#335](https://github.com/ChainSafe/dappeteer/issues/335)) ([3ad1b56](https://github.com/ChainSafe/dappeteer/commit/3ad1b568a866c69c2b63819372bf89d1fc8e023f))
+
+
+### Bug Fixes
+
+* use params in InvokeSnap method ([#334](https://github.com/ChainSafe/dappeteer/issues/334)) ([509e22b](https://github.com/ChainSafe/dappeteer/commit/509e22bdf886e3e8b10e1754eade679d105ab4fb)), closes [#333](https://github.com/ChainSafe/dappeteer/issues/333)
+
+## [5.1.1](https://github.com/ChainSafe/dappeteer/compare/v5.1.0...v5.1.1) (2023-05-03)
+
+
+### Bug Fixes
+
+* package publish ([#328](https://github.com/ChainSafe/dappeteer/issues/328)) ([f05f174](https://github.com/ChainSafe/dappeteer/commit/f05f1749e47db31ec05afe8cea01205f837555a3))
+
+## [5.1.0](https://github.com/ChainSafe/dappeteer/compare/v5.1.0...v5.1.0) (2023-05-03)
+
+
+### Features
+
+* triage issues github actions ([#301](https://github.com/ChainSafe/dappeteer/issues/301)) ([774958e](https://github.com/ChainSafe/dappeteer/commit/774958ea7dc92b77175bcbb89c736fbc72025756))
+* update MetaMask extension to v10.29.0 ([#312](https://github.com/ChainSafe/dappeteer/issues/312)) ([b79ab4c](https://github.com/ChainSafe/dappeteer/commit/b79ab4c74fab87747933d8f428624dcbffc3dd19))
+
+
+### Bug Fixes
+
+* inaccessible under scuttling mode ([#308](https://github.com/ChainSafe/dappeteer/issues/308)) ([a41e6dd](https://github.com/ChainSafe/dappeteer/commit/a41e6dd1c7be42273173a1dc1869819841f44c6d))
+* update minimum `playwright` peerDependencies ([#304](https://github.com/ChainSafe/dappeteer/issues/304)) ([90f45e0](https://github.com/ChainSafe/dappeteer/commit/90f45e0921ca9544197d24aa469f186417802fd8))
+
 ## [5.0.1](https://github.com/ChainSafe/dappeteer/compare/v5.0.0...v5.0.1) (2023-02-22)
 
 
