@@ -1,5 +1,4 @@
 import Stealth from "puppeteer-extra-plugin-stealth";
-import Block from "puppeteer-extra-plugin-block-resources";
 import pupetteer from "puppeteer-extra";
 
 import { DappeteerBrowser } from "../browser";
@@ -11,7 +10,6 @@ export async function launchPuppeteer(
   options: DappeteerLaunchOptions
 ): Promise<DappeteerBrowser> {
   pupetteer.use(Stealth());
-  pupetteer.use(Block({ blockedTypes: new Set(["image"]) }));
   const pBrowser = await pupetteer.launch({
     ...(options.puppeteerOptions ?? {}),
     headless: options.headless,
