@@ -11,7 +11,7 @@ export async function launchPlaywright(
     await import("playwright")
   ).chromium.launchPersistentContext(userDataDir, {
     ...(options.playwrightOptions ?? {}),
-    headless: options.headless,
+    headless: options.headless === "new" ? true : options.headless,
     args: [
       "--accept-lang=en",
       "--window-size=1920,1080",

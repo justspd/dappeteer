@@ -1,6 +1,6 @@
 {
   "name": "@tomastylecek/dappeteer",
-  "version": "5.2.0-test2",
+  "version": "5.2.1",
   "description": "E2E testing for dApps using Puppeteer + MetaMask",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

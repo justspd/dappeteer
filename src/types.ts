@@ -21,7 +21,7 @@ export type DappeteerLaunchOptions = {
   //fallbacks to installed dependency and prefers playwright if both are installed
   automation?: "puppeteer" | "playwright" | "custom";
   customAutomation?: CustomAutomation;
-  headless?: boolean; // default true
+  headless?: boolean | "new"; // default true
   puppeteerOptions?: Parameters<typeof puppeteerLaunch>[0];
   playwrightOptions?: PlaywrightLaunchOptions;
   userDataDir?: string;
